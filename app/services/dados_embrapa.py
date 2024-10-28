@@ -1,4 +1,4 @@
-from app.scraper import get_table_data,get_table_data2
+from app.scraper import get_table_data,get_table_data2, get_table_data3
 
 # Organiza URLs em um dicionário para cada tipo de dado (produção, processamento, comercialização).
 URLS = {
@@ -24,6 +24,11 @@ URLS2 = {
     'exportacao_suco_uva': 'http://vitibrasil.cnpuv.embrapa.br/index.php?subopcao=subopt_04&opcao=opt_06',  
 }
 
+URLS3 = {
+    'producao1': './html/producao.html'
+}
+
+
 def obter_dados(tipo: str) -> dict:
     """Obtém dados a partir do tipo especificado."""
     url = URLS.get(tipo) # Pega a URL correspondente ao tipo fornecido
@@ -37,3 +42,10 @@ def obter_dados2(tipo: str) -> dict:
     if not url: # Se o tipo for inválido, lança um erro
         raise ValueError(f"Tipo '{tipo}' não encontrado.")
     return get_table_data2(url) # Faz o scraping executando a função e retorna os dados
+
+def obter_dados3(tipo: str) -> dict:
+    """Obtém dados a partir do tipo especificado."""
+    url = URLS3.get(tipo)  # Pega a URL correspondente ao tipo fornecido
+    if not url: # Se o tipo for inválido, lança um erro
+        raise ValueError(f"Tipo '{tipo}' não encontrado.")
+    return get_table_data3(url) # Faz o scraping executando a função e retorna os dados

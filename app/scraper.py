@@ -40,3 +40,46 @@ def get_table_data2(url: str) -> dict:
         data[country] = {'quantidade': quantity, 'valor': value} # Cada país é uma chave no dicionário data O valor correspondente 
         # é um dicionário com a quantidade e o valor.
     return data
+
+def get_table_data3(file_path: str) -> dict:
+    """Extrai dados de uma tabela específica de um arquivo HTML e organiza em um JSON estruturado."""
+    
+    # Abre o arquivo HTML local e lê seu conteúdo
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+
+    # Cria o objeto BeautifulSoup com o conteúdo do HTML
+    soup = BeautifulSoup(content, 'html.parser')
+
+    # Encontra a tabela desejada
+    table = soup.find('table', class_='tb_base tb_dados')
+
+    data = {}  # Dicionário para armazenar os dados extraídos
+    current_category = None  # Para rastrear a categoria principal
+    total = None  # Variável para capturar o total ao final
+
+    # Itera sobre cada linha da tabela
+    for row in table.find_all('tr'):
+        cells = row.find_all('td')  # Coleta todas as células da linha
+
+        if len(cells) == 2:  # Espera exatamente 2 células por linha (nome e valor)
+            cell_class = cells[0].get('class', [])
+
+            if 'tb_item' in cell_class:  # Categoria principal
+                current_category = cells[0].text.strip()  # Extrai o nome da categoria
+                total_value = cells[1].text.strip()  # Extrai o valor total da categoria
+                data[current_category] = {"total": total_value, "subitens": {}}  # Inicializa a estrutura da categoria
+
+            elif 'tb_subitem' in cell_class and current_category:  # Subcategoria
+                subcategory = cells[0].text.strip()  # Nome da subcategoria
+                volume = cells[1].text.strip()  # Quantidade correspondente
+                data[current_category]["subitens"][subcategory] = volume  # Adiciona o subitem à categoria atual
+
+            elif not cell_class:  # Caso do "Total" geral
+                total = cells[1].text.strip()
+
+    # Adiciona o total geral no final, se existir
+    if total:
+        data["Total"] = total
+
+    return data  # Retorna o dicionário estruturado
