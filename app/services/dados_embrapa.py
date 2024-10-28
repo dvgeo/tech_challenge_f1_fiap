@@ -16,7 +16,7 @@ URLS = {
     'processamento_americanas': './html/processamento_americanas_hibridas.html',
     'processamento_uvas':'./html/processamento_uvas.html',
     'processamento_sem_classificacao':'./html/processamento_sem_classificacao.html',
-    #'comercializacao':'http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_04'
+    'comercializacao':'./html/comercializacao.html'
 }
 
 

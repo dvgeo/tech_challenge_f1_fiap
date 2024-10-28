@@ -67,7 +67,7 @@ def get_table_data(file_path: str) -> dict:
 
     return data  # Retorna o dicionário estruturado
 
-def get_table_data2(url: str) -> dict:
+'''def get_table_data2(url: str) -> dict:
     """Extrai dados de uma tabela específica da página HTML."""
     response = requests.get(url) # Faz uma requisição GET para a URL fornecida e baixa o conteúdo HTML
     soup = BeautifulSoup(response.content, 'html.parser') # Faz uma requisição GET para a URL fornecida e baixa o conteúdo HTML
@@ -82,9 +82,9 @@ def get_table_data2(url: str) -> dict:
         value = cells[2].text.strip()  # Extrai o valor da terceira célula.
         data[country] = {'quantidade': quantity, 'valor': value} # Cada país é uma chave no dicionário data O valor correspondente 
         # é um dicionário com a quantidade e o valor.
-    return data
+    return data'''
 
-'''def get_table_data2(url: str) -> dict:
+def get_table_data2(url: str) -> dict:
     """Extrai dados de uma tabela específica da página HTML."""
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -92,7 +92,7 @@ def get_table_data2(url: str) -> dict:
     # Localiza a tabela com os dados desejados
     table = soup.find('table', class_='tb_base tb_dados')
 
-    data = {"paises": []}  # Lista para armazenar os dados dos países
+    data = {"países": []}  # Lista para armazenar os dados dos países
     total_importacoes = {"quantidade": 0, "valor": 0}  # Para armazenar os totais
 
     # Itera sobre cada linha da tabela
@@ -114,8 +114,8 @@ def get_table_data2(url: str) -> dict:
                 total_importacoes["valor"] = valor
             else:
                 # Adiciona os dados do país na lista
-                data["paises"].append({
-                    "pais": pais,
+                data["países"].append({
+                    "país": pais,
                     "quantidade": quantidade,
                     "valor": valor
                 })
@@ -123,4 +123,4 @@ def get_table_data2(url: str) -> dict:
     # Adiciona o total ao final do JSON
     data["total"] = total_importacoes
 
-    return data'''
+    return data
