@@ -3,7 +3,6 @@ from app.routes.comercializacao import router as comercializacao_router
 from app.routes.importacao import router as importacao_router
 from app.routes.exportacao import router as exportacao_router
 from app.routes.producao import router as producao_router
-from app.routes.producao1 import router as producao1_router
 from app.routes.home import router as home_router
 from app.routes.processamento import router as processamento_router
 
@@ -16,5 +15,4 @@ app.include_router(importacao_router)
 app.include_router(exportacao_router)
 app.include_router(home_router)
 app.include_router(producao_router)
-app.include_router(producao1_router)
 app.include_router(processamento_router)

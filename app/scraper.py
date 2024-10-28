@@ -1,7 +1,7 @@
 import requests # Para fazer a requisição HTTP
 from bs4 import BeautifulSoup # Para processar o HTML da página
 
-def get_table_data(url: str) -> dict:
+'''def get_table_data(url: str) -> dict:
     """Extrai dados de uma tabela específica da página HTML."""
     response = requests.get(url)  # Faz a requisição HTTP para a URL
     soup = BeautifulSoup(response.content, 'html.parser') # Converte o HTML para um objeto BeautifulSoup
@@ -22,26 +22,9 @@ def get_table_data(url: str) -> dict:
                 subcategory = cells[0].text.strip()
                 volume = cells[1].text.strip() # Extrai a quantidade correspondente
                 data[current_category][subcategory] = volume  # Adiciona a subcategoria e sua quantidade na categoria atual
-    return data # Retorna o dicionário com as categorias e subcategorias
+    return data # Retorna o dicionário com as categorias e subcategorias'''
 
-def get_table_data2(url: str) -> dict:
-    """Extrai dados de uma tabela específica da página HTML."""
-    response = requests.get(url) # Faz uma requisição GET para a URL fornecida e baixa o conteúdo HTML
-    soup = BeautifulSoup(response.content, 'html.parser') # Faz uma requisição GET para a URL fornecida e baixa o conteúdo HTML
-
-    table = soup.find('table', class_='tb_base tb_dados') # Busca a primeira tabela com a classe CSS 'tb_base tb_dados'
-    data = {} # Um dicionário vazio é criado para armazenar os dados extraídos
-
-    for row in table.find_all('tr')[1:]:  # Encontra todas as linhas da tabela (<tr>) e ignora a primeira linha, que é o cabeçalho.
-        cells = row.find_all('td') # Para cada linha, encontra todas as células (<td>), que contêm os dados.
-        country = cells[0].text.strip() # Extrai o nome do país (ou identificador) da primeira célula e remove espaços em branco com strip()
-        quantity = cells[1].text.strip()  # Extrai a quantidade da segunda célula
-        value = cells[2].text.strip()  # Extrai o valor da terceira célula.
-        data[country] = {'quantidade': quantity, 'valor': value} # Cada país é uma chave no dicionário data O valor correspondente 
-        # é um dicionário com a quantidade e o valor.
-    return data
-
-def get_table_data3(file_path: str) -> dict:
+def get_table_data(file_path: str) -> dict:
     """Extrai dados de uma tabela específica de um arquivo HTML e organiza em um JSON estruturado."""
     
     # Abre o arquivo HTML local e lê seu conteúdo
@@ -83,3 +66,61 @@ def get_table_data3(file_path: str) -> dict:
         data["Total"] = total
 
     return data  # Retorna o dicionário estruturado
+
+def get_table_data2(url: str) -> dict:
+    """Extrai dados de uma tabela específica da página HTML."""
+    response = requests.get(url) # Faz uma requisição GET para a URL fornecida e baixa o conteúdo HTML
+    soup = BeautifulSoup(response.content, 'html.parser') # Faz uma requisição GET para a URL fornecida e baixa o conteúdo HTML
+
+    table = soup.find('table', class_='tb_base tb_dados') # Busca a primeira tabela com a classe CSS 'tb_base tb_dados'
+    data = {} # Um dicionário vazio é criado para armazenar os dados extraídos
+
+    for row in table.find_all('tr')[1:]:  # Encontra todas as linhas da tabela (<tr>) e ignora a primeira linha, que é o cabeçalho.
+        cells = row.find_all('td') # Para cada linha, encontra todas as células (<td>), que contêm os dados.
+        country = cells[0].text.strip() # Extrai o nome do país (ou identificador) da primeira célula e remove espaços em branco com strip()
+        quantity = cells[1].text.strip()  # Extrai a quantidade da segunda célula
+        value = cells[2].text.strip()  # Extrai o valor da terceira célula.
+        data[country] = {'quantidade': quantity, 'valor': value} # Cada país é uma chave no dicionário data O valor correspondente 
+        # é um dicionário com a quantidade e o valor.
+    return data
+
+'''def get_table_data2(url: str) -> dict:
+    """Extrai dados de uma tabela específica da página HTML."""
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Localiza a tabela com os dados desejados
+    table = soup.find('table', class_='tb_base tb_dados')
+
+    data = {"paises": []}  # Lista para armazenar os dados dos países
+    total_importacoes = {"quantidade": 0, "valor": 0}  # Para armazenar os totais
+
+    # Itera sobre cada linha da tabela
+    for row in table.find_all('tr'):
+        cells = row.find_all('td')
+
+        if len(cells) == 3:  # Espera exatamente 3 células: País, Quantidade, Valor
+            pais = cells[0].text.strip()
+            quantidade = cells[1].text.strip().replace('.', '')
+            valor = cells[2].text.strip().replace('.', '')
+
+            # Converte '-' em 0 para processamento
+            quantidade = int(quantidade) if quantidade != '-' else 0
+            valor = int(valor) if valor != '-' else 0
+
+            # Verifica se é a linha do total
+            if pais.lower() == "total":
+                total_importacoes["quantidade"] = quantidade
+                total_importacoes["valor"] = valor
+            else:
+                # Adiciona os dados do país na lista
+                data["paises"].append({
+                    "pais": pais,
+                    "quantidade": quantidade,
+                    "valor": valor
+                })
+
+    # Adiciona o total ao final do JSON
+    data["total"] = total_importacoes
+
+    return data'''
